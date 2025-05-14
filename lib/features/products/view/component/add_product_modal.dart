@@ -25,7 +25,6 @@ class _AddProductModalState extends State<AddProductModal> {
   Future pickImage() async {
     final XFile? img = await _picker.pickImage(source: ImageSource.gallery);
     imageNotifier.value = img;
-    print(img?.path);
     newProduct = newProduct.copyWith(imageSrc: img?.path);
   }
 
