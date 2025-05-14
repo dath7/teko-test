@@ -4,14 +4,33 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:teko/features/products/data/models/product_model.dart';
 
-class ProductGridview extends StatelessWidget {
+class ProductGridview extends StatefulWidget {
   final List<Product> listProduct;
   const ProductGridview({super.key, required this.listProduct});
 
   @override
-  Widget build(BuildContext context) {
-    // lazy load
+  State<ProductGridview> createState() => _ProductGridviewState();
+}
+
+class _ProductGridviewState extends State<ProductGridview> {
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void didUpdateWidget(covariant ProductGridview oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.listProduct != oldWidget.listProduct) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) { // lazy load
     return GridView.builder(
+      controller: scrollController,
       physics: ClampingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -19,9 +38,9 @@ class ProductGridview extends StatelessWidget {
         crossAxisSpacing: 20,
         mainAxisSpacing: 20,
       ), 
-      itemCount: listProduct.length,
+      itemCount: widget.listProduct.length,
       itemBuilder: (context, index) {
-        final product = listProduct[index];
+        final product = widget.listProduct[index];
         final bool isNetworkUrl = product.imageSrc.contains("https://");
 
         Widget buildNetWorkImg() {
