@@ -18,8 +18,9 @@ class ProductCubit extends Cubit<ProductState> {
 
   Future<void> addProduct(Product product) async {
     List productList = state.products;
-    emit(state.copyWith(status: ProductFetching.loading));
-    await Future.delayed(const Duration(milliseconds: 500));
+    // not load again to preserve scroll position
+    // emit(state.copyWith(status: ProductFetching.loading));
+    // await Future.delayed(const Duration(milliseconds: 500));
     await ProductRepo.addProduct(product);
     emit(state.copyWith(status: ProductFetching.success, products: [...productList, product]));
   }
