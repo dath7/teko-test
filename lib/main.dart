@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:teko/features/products/domain/bloc/product_cubit.dart';
 import 'package:teko/features/products/view/products_screen.dart';
 
 void main() async {
@@ -57,7 +59,9 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const ProductScreen(),
+      home: BlocProvider(
+        create: (context) => ProductCubit(),
+        child: const ProductScreen()),
     );
   }
 }

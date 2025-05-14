@@ -18,4 +18,5 @@ class StringResources{
   final String productNameNotValid = "Tên sản phẩm có tối đa 20 ký tự";
   final String pleaseEnterPrice = "Vui lòng nhập giá sản phẩm";
   final String priceNotValid = "Giá sản phẩm phải trong khoảng 10.000 - 100.000.000";
+  final String noData = "Không có dữ liệu";
 }

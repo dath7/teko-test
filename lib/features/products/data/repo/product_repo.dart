@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:teko/features/products/domain/models/product_model.dart';
+import 'package:teko/features/products/data/models/product_model.dart';
 import 'package:teko/features/products/domain/network/product_api.dart';
 
 class ProductRepo {
@@ -19,12 +19,12 @@ class ProductRepo {
     }
   }
 
-  static void addProduct(Product product) {
+  static Future<void> addProduct(Product product) async {
     // create box if not exist
     var box = Hive.box('product');
     final List data = box.get("items") ?? [];
     data.add(product.toJson());
-    box.put("items", data);
+    await box.put("items", data);
   }
 
   static Future<List<Product>> getDataFromHive() async {

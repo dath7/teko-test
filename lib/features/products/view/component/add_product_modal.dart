@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:teko/core/resource/string_resource.dart';
-import 'package:teko/features/products/data/repo/product_repo.dart';
-import 'package:teko/features/products/domain/models/product_model.dart';
+import 'package:teko/features/products/data/models/product_model.dart';
+import 'package:teko/features/products/domain/bloc/product_cubit.dart';
 import 'package:teko/features/products/view/component/text_form_field.dart';
 
 class AddProductModal extends StatefulWidget {
@@ -18,29 +18,24 @@ class AddProductModal extends StatefulWidget {
 class _AddProductModalState extends State<AddProductModal> {
   final StringResources s = StringResources();
   final ImagePicker _picker = ImagePicker();
-  FToast fToast = FToast();
   ValueNotifier<bool> isValid = ValueNotifier(false);
   ValueNotifier<XFile?> imageNotifier = ValueNotifier(null);
-  Product newProduct = Product.empty();
-
-  @override
-  void initState() { 
-    super.initState();
-    fToast.init(context);
-  }
+  Product newProduct = Product.empty;
 
   Future pickImage() async {
     final XFile? img = await _picker.pickImage(source: ImageSource.gallery);
-
     imageNotifier.value = img;
+    print(img?.path);
+    newProduct = newProduct.copyWith(imageSrc: img?.path);
   }
 
   void removeImage() {
     imageNotifier.value = null;
+    newProduct = newProduct.copyWith(imageSrc: defaultImageUrl);
   }
 
   void addProduct() {
-    ProductRepo.addProduct(newProduct);
+    context.read<ProductCubit>().addProduct(newProduct);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -91,7 +86,7 @@ class _AddProductModalState extends State<AddProductModal> {
             _labelWidget(title: s.productName),
             CustomTextFormField(
               onChanged: (value) {
-                newProduct.name = value;
+                newProduct = newProduct.copyWith(name: value);
                 // check valid
                 isValid.value = isValidForm();
               },
@@ -114,7 +109,7 @@ class _AddProductModalState extends State<AddProductModal> {
             _labelWidget(title: s.productPrice),
             CustomTextFormField(
               onChanged: (value) {
-                newProduct.price = double.tryParse(value) ?? 0;
+                newProduct = newProduct.copyWith(price: double.tryParse(value) ?? 0);
                 // check valid
                 isValid.value = isValidForm();
               },
