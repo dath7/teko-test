@@ -1,18 +1,13 @@
-# teko
 
-A new Flutter project.
 
-#Flutter version: Flutter (Channel stable, 3.29.0)
+Uploading Screen Recording 2025-05-14 at 15.49.30.mov…
+# Flutter version: Flutter (Channel stable, 3.29.0)
 
-## Getting Started
+# Step to run:
+  1. flutter pub get
+  2. flutter run
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Description:
+- Get data from TEKO API and parse to show element in grid view
+- Implement add product through save json to Hive 
+- Optimize UI/UX (shimmer effect, handle fetching status, jump to bottom when new item added)
